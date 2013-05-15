@@ -28,11 +28,20 @@ PRIMARY KEY(CID)
 	}
 }
 
-// delete table routine
+// delete tables routine
 if ( isset( $_POST['delete_table'] ) ) {
-	$table = $tab_pr . "Cards";
-	$sql = "DROP TABLE " . $table . ";";
-	if ( $con->query($sql) !== TRUE ) {
+	$main_table = $tab_pr . "Cards";
+	$all_entries = "SELECT * FROM " . $main_table . ";";
+	$data = $con->query($all_entries);
+	$arr = $data->fetch_all(MYSQLI_ASSOC);
+	$all_tables = "";
+	foreach ( $arr as $entry ) {
+		$all_tables .= $tab_pr . $entry["CardNumber"] . "_Movements";
+		$all_tables .= ", ";
+	}
+	$all_tables .= $main_table;
+	$all_sql = "DROP TABLE " . $all_tables . ";";
+	if ( $con->query($all_sql) !== TRUE ) {
 		echo "something went wrong with your query, exiting.";
 	}
 }
@@ -44,6 +53,18 @@ if ( isset( $_POST['save_card'] ) ) {
 	$money = $_POST['initial_amount'];
 	$sql = "INSERT INTO " . $table . " VALUES ('', " . $card . ", " . $money . ");";
 	if ( $con->query($sql) !== TRUE ) {
+		echo "something went wrong with your query, exiting.";
+	}
+	// once we have successfully added our new card, let's make a new table for it
+	// where we'll store every movement
+	$new_card_table = $tab_pr . $card . "_Movements";
+	$card_sql = "CREATE TABLE " . $new_card_table . " (
+MID INT NOT NULL AUTO_INCREMENT,
+Date DATETIME NOT NULL,
+Amount DECIMAL(8,2) NOT NULL,
+PRIMARY KEY(MID)
+)";
+	if ( $con->query($card_sql) !== TRUE ) {
 		echo "something went wrong with your query, exiting.";
 	}
 }

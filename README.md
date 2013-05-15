@@ -38,16 +38,17 @@ What have I done till now
 * Added a form that will ask the user for a __complete__ credit card number and 
 an initial amount of money. These infos are required to initialize the database
 entry for that credit card;
+* Now the script is able to create a database table for every card that we add
+using the form;
 
 What I want to accomplish
 -------------------------
 
-* Apart from killing my boredom :P I want this script to be able to create a 
-different table for every card that I'll add;
+* kill my boredom :P
 * It has to be able to do all the math regarding card movements;
 * I want to play a little with css just to make it look good! ;)
-
-
+* I will probably add a print css that will output all movements for a specific
+card, like the ticket that you print at every bancomat;
 
 
   [1]: http://danixland.net/        "danixland.net"
